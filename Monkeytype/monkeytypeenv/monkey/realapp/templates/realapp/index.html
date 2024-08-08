@@ -1,0 +1,25 @@
+{% extends "realapp/base.html" %}
+{% load static %}
+
+<!DOCTYPE html>
+
+{% block body_block %}
+<link rel="stylesheet" href="{% static 'index.css' %}">
+
+
+<p style="color: #B5C18E; text-align: center;margin-top: 5px;">tip: You can also change all these settings quickly using the command line (esc or ctrl + shift + p)</p>
+    <table id="table-top">
+        <th><p><a style="text-decoration: none; color: #B5C18E;" href="">behaviour</a></p></th>
+        <th><p><a style="text-decoration: none;color: #B5C18E;" href="">input</a></p></th>
+        <th><p><a style="text-decoration: none;color: #B5C18E;" href="">sound</a></p></th>
+        <th><p><a style="text-decoration: none;color: #B5C18E;"href="">caret</a></p></th>
+        <th><p><a style="text-decoration: none;color: #B5C18E;"href="">appearance</a></p></th>
+        <th><p><a style="text-decoration: none;color: #B5C18E;"href="">theme</a></p></th>
+        <th><p><a style="text-decoration: none;color: #B5C18E;"href="">hide elements</a></p></th>
+        <th><p><a style="text-decoration: none;color: #B5C18E;"href="">danger zone</a></p></th>
+    </table>
+
+    <h1 style="font-size: 70px; color: white; margin-top: 150px;text-align: center;">HARD JOB TO FINISH ALONE</h1>
+
+
+{% endblock %}

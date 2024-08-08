@@ -1,0 +1,105 @@
+{% extends "realapp/base.html" %}
+{% load static %}
+<!DOCTYPE html>
+
+{% block body_block %}
+<link rel="stylesheet" href="{% static 'type.css' %}">
+
+<title>Test</title>
+<div id="typeHtml">
+    <table id="type-table">
+       
+        <th style="width: 100px;padding-right: 0px;"><i class="fas fa-clock"></i><a id="time-link" href="">time</a></th>
+        <th style="width: 10px; display: none;" id="hidden" >|</th>
+        <th style="width: 40px; display: none;" id="ex1"><a href="">15</a></th>
+        <th style="width: 40px; display: none;" id="ex2"><a href="">30</a></th>
+        <th style="width: 40px; display: none;" id="ex3"><a href="">60</a></th>
+        <th style="width: 40px; display: none;" id="ex4"><a href="">120</a></th>
+        <th style="width: 40px; display: none;" id="ex5"><a href="">custom</a></th>
+        
+    
+    </table>
+    
+    <div id="custom-timer-modal" style="display: none; z-index: 3;width:700px;height: 300px;position: fixed;margin-left: 400px;">
+    <div style=" background-color: #B5C18E;padding: 20px;">
+          <p>Test duration</p>
+          
+          <textarea  id="timer-txtarea"></textarea> 
+          <p>You can use "h" for hours , "m" for minutes and"s" for seconds, for example "1h30m20s".</p><br>
+          <p id="timer-input"></p>
+          <button style="" id="ok">OK</button>
+    </div>
+    </div>
+    
+    
+    <label for="language"><i style="margin-left: 630px;margin-top: 50px;" class="fas fa-language"></i></label>
+    <select id="select-lang" name="language" id="lng-opt">
+        <option  value="English">English</option>
+        <option  value="Hindi">Hindi</option>
+        <option  value="Spanish">Spanish</option>
+        <option  value="French">French</option>
+        <option  value="Japanese">Japanese</option>
+        <option  value="Sanskrit">Sanskrit</option>
+    </select>
+    
+    
+    <p id="timer"  style="text-align: center;"></p>
+    
+    
+        <div id="test-para-modal" style="margin-top: 25px;">
+            <textarea  id="para"></textarea>
+            <p id="real-test"></p>
+    
+        </div>
+    
+    
+    
+    
+    <a href="{% url 'test' %}"><i style="margin-left: 680px; margin-top: 20px; margin-bottom: 87px;" class="fas fa-redo"></i></a>
+    
+    
+    <table id="socials-table">
+        <th><p><i class="fas fa-envelope-open" style=""></i> <a style="color: #B5C18E;" href="">Contact</a></p></th>
+        <th><p><i class="fas fa-dollar-sign"></i> <a style="color: #B5C18E; " href="">Support</a></p></th>
+        <th><p><i class="fab fa-github-square"></i> <a style="color: #B5C18E; " href="">Github</a></p></th>
+        
+        <th style="width: 120px;"><p><i class="fab fa-twitter"> <a style="color: #B5C18E; " href="">Twitter</a></i></p></th>
+        <th><p><i class="fas fa-book"></i><a style="color: #B5C18E; " href=""> Terms</a></p></th>
+        <th><p><i class="fas fa-shield-alt"></i><a style="color: #B5C18E; " href=""> Security</a></p></th>
+        <th><p><i class="fas fa-lock"></i><a style="color: #B5C18E; " href=""> Privacy</a></p></th> 
+        <th style="width: 600px; text-align: right; padding-right: 10px;"><p></p><i class="fas fa-highlighter"></i><a style="color: #B5C18E; " href=""> my theme</a></th>
+        
+        <th style="width: 80px;"><p><i style="color: #B5C18E; "  class="fab fa-cloudsmith"></i> v1.0.0</p></th>  
+    </table>
+</div>
+
+<div id="resultHtml" style="display: none;">
+    
+    
+    <h1 id="wpm"></h1>
+    <p id="accuracy"></p>
+    <p id="rawspeed"></p>
+    <p id="testtype"></p>
+    <button id="newTest"><a href="http://127.0.0.1:8000/">Next</a></button><br>
+    {% if loggedin %}
+    <a href="">Sign in to save your records</a>
+
+    {% else %}
+    <br>
+    <p>Here are your top 5 personal best:</p>
+    <p id="#1"></p>
+    <p id="#2"></p>
+    <p id="#3"></p>
+    <p id="#4"></p>
+    <p id="#5"></p>
+
+    {% endif %}
+    
+    
+</div>
+
+
+<script src="{% static 'type.js' %}"></script>
+
+
+{% endblock %}

@@ -1,0 +1,87 @@
+#test-para-modal {
+    position: relative; /* Container must be relative for absolute positioning of children */
+    width: 90%; /* Set width to match textarea and p element */
+    margin: 0 auto; /* Center the container horizontally */
+}
+
+#para {
+    font-size: 25px;
+    font-family:'Courier New', Courier, monospace;
+    font-weight: 500;
+    color: brown;
+    caret-color: rgb(161, 7, 7);
+    
+    word-break: break-word;
+    height: 187px;
+    width: 100%; 
+    margin: 0; 
+    padding: 10px; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    z-index: 2; 
+    background: none; /* Transparent background */
+    overflow: auto;
+    overflow: hidden; /* Allows scrolling if content overflows */
+    border: none;
+    resize: none;
+    outline: none;
+    letter-spacing: normal;
+}
+
+#real-test {
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    color: rgb(221, 85, 85); 
+    height: 187px;
+    width: 100%; 
+    margin: 0; 
+    padding: 10px; 
+    position: relative; 
+    font-weight: 500;
+    top: 0; 
+    left: 0; 
+    z-index: 1; 
+    overflow: auto; 
+    overflow: hidden;
+    pointer-events: none; 
+    word-break: break-word;
+    letter-spacing: normal;
+}
+body{
+    background-color:#78654f;
+    color: #ed6a5a;
+    /* button background: #fbf6ef */
+}
+#type-table{
+    background-color:#583914 ;
+    border-radius: 20px;
+    font-family: 'Lato',sans-serif;
+    height: 30px;
+    margin-left: 480px;
+    font-weight: lighter;
+    font-size: 12px;
+}#hidden{
+    display: none;
+}
+a{
+   color: #ed6a5a; 
+   text-decoration: none;
+}
+#select-lang{
+    background-color: #583914;
+    color:#ed6a5a;
+    border: none;
+    border-radius: 10px;
+    height: 30px;
+    width: 100px;
+    padding-left: 10px;
+}
+
+#socials-table{
+    color: #B5C18E;
+    margin-left: 40px;
+}
+#socials-table th{
+    width: 100px;
+}

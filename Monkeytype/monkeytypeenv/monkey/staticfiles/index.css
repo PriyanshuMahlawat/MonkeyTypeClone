@@ -1,0 +1,9 @@
+#table-top{
+    margin-left: 120px;
+    margin-right: 120px;
+}
+th{
+    width: 150px;
+    font-family: 'Lato',sans-serif;
+    font-weight: lighter;
+}

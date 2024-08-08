@@ -1,0 +1,36 @@
+{% extends "realapp/base.html" %}
+{% load static %}
+{% block body_block %}
+<link rel="stylesheet" href="{% static 'leaderboard.css' %}">
+<script src="{% static 'leaderboard.js' %}"></script>
+<h1>All-time English Leaderboards</h1>
+<div style="margin-right: 300px;margin-left:200px;" class="table-container">
+    <p style="font-size: larger;">Time 15 seconds</p>
+    <table id="whole15">
+        <tr><th >#Name</th>
+            <th >WPM</th> 
+        </tr>
+                  
+    </table>
+    {% if logged_in %}
+    <table style="text-align: center; background-color: rgba(80, 110, 230, 0.813); width:400px;height:50px;border-radius: 40px;margin-top: 10px;padding-top: 2%;"><tr id="your15"><td>Your Rank: </td></tr></table>
+    {% else %}
+    <table><tr>Login to see yours here!</tr></table>
+    {% endif %}
+</div>
+
+<div class="table-container">
+    <p style="font-size: larger;">Time 60 seconds</p>
+    <table id="whole60">
+        <th >#Name</th>
+        <th >WPM</th>
+    </table>
+    {% if logged_in %}
+    <table style="text-align: center; background-color: rgba(80, 110, 230, 0.813); width:400px;height:50px;border-radius: 40px;margin-top: 10px;padding-top: 2%;"><tr id="your60"><td>Your Rank: </td></tr></table>
+    {% else %}
+    <table><tr>Login to see yours here!</tr></table>
+    {% endif %}
+
+</div>
+
+{% endblock %}

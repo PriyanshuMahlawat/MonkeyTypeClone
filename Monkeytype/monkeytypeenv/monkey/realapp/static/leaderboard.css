@@ -1,0 +1,22 @@
+.table-container{
+    float: left;
+}
+#whole15{
+    width: 400px;
+    text-align: center;
+    border-color: black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid white;
+    padding-left: 20px;
+    background-color: rgba(80, 110, 230, 0.813) ;
+    border-radius: 40px;
+}
+#whole60{
+    width: 400px;
+    text-align: center;
+    border-color: black;
+    border: 1px solid white;
+    background-color: rgba(80, 110, 230, 0.813) ;
+    border-radius: 40px;
+}

@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+<body>
+    <table id="top-table">
+        <th ><a style="text-decoration: none;" href="{% url 'auth_view' %}"><p id="sml-icon">monkey see</p><br>
+            <p id="lrg-icon">monkeytype</p></a></th>
+        <th style="width: 60px;"><a href="{% url 'test' %}"><i style ="color: #B5C18E;" class="fas fa-keyboard"></i></a></th>
+        <th style="width: 35px;"><a href="{% url 'leaderboard' %}"><i style="color: #B5C18E;" class="fas fa-chess-queen" ></i></a></th>
+        <th style="width: 35px;"><a href="{% url 'about' %}"><i style="color: #B5C18E;" class="fas fa-info"></i></a></i></th>
+        <th style="width: 35px;"><a href="{% url 'auth_view' %}"><i style="color: #B5C18E;" class="fas fa-cog"></i></a></th>
+        <th style="width: 810px; text-align: right;"><a id="anoun" href=""><i style="color: #B5C18E;" class="fas fa-bell"></i></a></th>
+        <th style="width: 50px;">
+            {% if not logged_in %}
+            <a id="login" href=""><i style="color: #B5C18E;" class="fas fa-user-tie"></i></a>
+            <div id="login-trans">
+                <div id="login-visible">
+                        
+                    <button><i id='close-log' style="float: left;" class="fas fa-reply"></i></button>
+                        
+                    <p >Sign In and start typing.</p>
+                        
+                    <form method="post" id="loginForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="login" value="Login">
+                        <label for="username">Username:</label>
+                        <input name="username" type="text"><br>
+                            
+                        <label for="password">Password:</label>
+                        <input type="password" name="password"><br>
+                        {% if inputerr %}
+                        <p >There is some error in your credentials Or you are not Signed Up!</p>
+                        {% endif %}
+                            
+                        <input type="submit" id="login-submit" value="Sign In!">
+                    </form>
+                    <label for="regitser">You can always create an account:</label>
+                    <button id="register-button" name="register">Sign up!</button>
+
+                </div>
+            </div>
+            {% else %}
+            <p style="width: 200px;" id="user-alias">Welcome, {{ alias }}</p>
+            <th><a href="{% url 'logout' %}"><i  class="fas fa-power-off"></i></a></th>
+            {% endif %}
+            
+
+ 
+            
+            <div id="register-trans">
+                <div id="register-visible">
+                        {% if not registered %}
+                        
+                        <button ><i id="close-reg" class="fas fa-reply"></i></button>
+                        
+                        <p >Oops! You are not registered.</p>
+                        <p >Create an account.</p>
+                        <form method="post"  enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            {{ user_form.as_p }}
+                            {{ userinfo_form.as_p }}
+                            <input type="hidden" name="register" value="Register">
+                            <input type="submit" id="register-submit" value="Sign Up!">
+                        </form>
+                        {% else %}
+                        <p>Thanks for registering!</p>
+                        {% endif %}
+                        
+
+                </div>
+
+            </div>
+            
+
+
+ 
+            
+        
+        </th>
+    </table>
+        <div id="anouncements-outer">
+        <div id="anouncements">
+            <button style="margin-top: 20px;"><a href=""><i id='close-anoun' style="float: left;" class="fas fa-reply"></i></a></button>
+            <p>No Announcements yet:</p>
+            
+            <p style="margin-top: -8px;">___________________________________</p>
+            <p style="margin-top: 393px;">Anouncements first comes on our gitProfile.</p>
+            <p>Do <a href="">Check it out</a> to keep updated.</p>
+        </div>
+        </div>
+    
+   <p style="display: none; " id="user_id">{{ user_id }}</p>
+    
+    
+
+   
+    
+    {% block body_block %}
+    {% endblock %}
+    <script src="{% static 'base.js' %}"></script>
+    
+</body>
+</html>
