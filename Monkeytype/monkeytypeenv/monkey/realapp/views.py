@@ -7,6 +7,7 @@ from rest_framework import generics
 from .models import pastRecords,UserInfo
 from .serializers import pastRecordsSerializer,pastRecordsAliasSerializer
 from django.views.decorators.csrf import csrf_protect,ensure_csrf_cookie
+from django.contrib import messages
 
 # Create your views here.
 
@@ -49,45 +50,40 @@ def register(request):
 
 
 def user_login(request):
-    inputerr = False
-    logged_in = False
     if request.method == "POST":
-        
         username = request.POST.get('username')
         password = request.POST.get('password')
         
-        
-        positive = authenticate(username=username,password=password)
-        print(positive)
+        positive = authenticate(username=username, password=password)
         if positive:
-            login(request,positive)
-            logged_in = True
+            login(request, positive)
             userinfo = positive.userinfo
-            alias = userinfo.alias
-            user_id = request.user.id
             
             
-            return {"logged_in":logged_in,"alias":alias,"inputerr":inputerr,"user_id":user_id}
+            request.session['logged_in'] = True
+            request.session['alias'] = userinfo.alias
+            request.session['user_id'] = positive.id
+            request.session['inputerr']  =False
+            
+            
+            return redirect('test')  
         else:
-            
-            inputerr = True
-            return {"logged_in":logged_in,"inputerr":inputerr}
-    else:
-        
-        return {"logged_in":logged_in,"inputerr":inputerr}
+            request.session['logged_in'] = False
+            request.session['alias'] = ''
+            request.session['user_id'] = ''
+            request.session['inputerr'] = True
+            return redirect('test')  
+    
+    return redirect('test')  
 
 @csrf_protect
 
 def auth_view(request):
     context = {}
-    if request.user.is_authenticated:
-        context['logged_in'] =True
-        userinfo, created = UserInfo.objects.get_or_create(user=request.user)
-        context['alias'] = userinfo.alias
-        context['user_id'] = request.user.id
-    else:
-        context['logged_in'] =False 
-
+    context['logged_in'] = request.session.get('logged_in', False)
+    context['alias'] = request.session.get('alias', '')
+    context['user_id'] = request.session.get('user_id', '')
+    context['inputerr'] = request.session.get('inputerr', False)
     if request.method=="POST":
 
         if 'login' in request.POST:
@@ -111,18 +107,14 @@ def auth_view(request):
 def typeView(request):
     context = {}
 
-    if request.user.is_authenticated:
-        context['logged_in'] =True
-        userinfo,created = UserInfo.objects.get_or_create(user = request.user)
-        context['alias'] = userinfo.alias
-        context['user_id'] = request.user.id
-    else:
-        context['logged_in'] =False    
-
-    if request.method=="POST":
-
+    
+    context['logged_in'] = request.session.get('logged_in', False)
+    context['alias'] = request.session.get('alias', '')
+    context['user_id'] = request.session.get('user_id', '')
+    context['inputerr'] = request.session.get('inputerr', False)
+    if request.method == "POST":
         if 'login' in request.POST:
-            context.update(user_login(request))
+            return user_login(request)
         if 'register' in request.POST or request.FILES:
             context.update(register(request))
         
@@ -135,20 +127,15 @@ def typeView(request):
             "registered": False
         })
     
-        
-    return render(request,"realapp/type.html",context)
+    return render(request, "realapp/type.html", context)
 
 @csrf_protect
 def leaderboardView(request):
     context = {}
-    if request.user.is_authenticated:
-        context['logged_in'] =True
-        userinfo,created = UserInfo.objects.get_or_create(user = request.user)
-        context['alias'] = userinfo.alias
-        context['user_id'] = request.user.id
-    else:
-        context['logged_in'] =False 
-
+    context['logged_in'] = request.session.get('logged_in', False)
+    context['alias'] = request.session.get('alias', '')
+    context['user_id'] = request.session.get('user_id', '') 
+    context['inputerr'] = request.session.get('inputerr', False)
     if request.method=="POST":
 
         if 'login' in request.POST:
@@ -171,14 +158,10 @@ def leaderboardView(request):
 @csrf_protect
 def aboutView(request):
     context = {}
-    if request.user.is_authenticated:
-        context['logged_in'] =True
-        userinfo,created = UserInfo.objects.get_or_create(user = request.user)
-        context['alias'] = userinfo.alias
-        context['user_id'] = request.user.id
-    else:
-        context['logged_in'] =False 
-
+    context['logged_in'] = request.session.get('logged_in', False)
+    context['alias'] = request.session.get('alias', '')
+    context['user_id'] = request.session.get('user_id', '')
+    context['inputerr'] = request.session.get('inputerr', False)
     if request.method=="POST":
 
         if 'login' in request.POST:
@@ -205,5 +188,8 @@ def aboutView(request):
 @login_required
 def user_logout(request):
     logout(request)
-    
+    request.session.pop('logged_in', None)
+    request.session.pop('alias', None)
+    request.session.pop('user_id', None)
+    request.session.pop('inputerr',None)
     return redirect("test")
