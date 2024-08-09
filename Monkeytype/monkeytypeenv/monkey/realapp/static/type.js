@@ -149,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             document.getElementById("rawspeed").innerText = `Raw Speed  ${rawSpeed}`;
                             document.getElementById("testtype").innerText = `Test Type:  ${testType}`;
                         }
+                        //ummm
 
                         if (logged_in) {
                             fetch("http://127.0.0.1:8000/api/records/", {
