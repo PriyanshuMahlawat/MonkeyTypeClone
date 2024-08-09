@@ -24,9 +24,9 @@ TEMPLATE_DIR = BASE_DIR/'templates'
 SECRET_KEY = "django-insecure-a1#7s!+-*6bw93_8o3vk&0hgwt!%c0yu85a%%&7+u4e*u&=fw-"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['priyanshudjango.pythonanywhere.com']
 
 
 # Application definition
@@ -38,19 +38,26 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "rest_framework",
     "realapp",
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
+
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 
 
@@ -132,7 +139,7 @@ USE_TZ = False
 STATIC_URL = "static/"
 STATIC_ROOT = "staticfiles"
 STATICFILES_DIRS =[
-    
+
     BASE_DIR / 'realapp/static',]
 
 
@@ -141,7 +148,7 @@ MEDIA_ROOT = "mediafiles"
 MEDIAFILES_DIRS = [
     BASE_DIR/"realapp/media",
 ]
-    
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
