@@ -13,12 +13,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return cookieValue;
     }
-   
+
 
     const csrftoken = getCookie('csrftoken');
     var wordarray = [];
     var time = 15;
-    
+
     fetch("http://127.0.0.1:8000/static/dictionary.txt")
         .then(response => {
             if (!response.ok) {
@@ -75,25 +75,25 @@ document.addEventListener('DOMContentLoaded', function () {
         let spaceindex = 0;
         var para1 = para;
         let previous_input = "";
-        
 
-        
-        
-        inputText.addEventListener("keyup",function(event){           
-            
-            
+
+
+
+        inputText.addEventListener("keyup", function (event) {
+
+
             keyupTxtarea(event);
-            
-        });
-        
-        
 
-        
-        
+        });
+
+
+
+
+
         function keyupTxtarea(event) {
-            
-            
-            
+
+
+
             if (event.key == "Enter") {
                 event.preventDefault();
                 event.stopPropagation();
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         var roundoffAccuracy = accuracy.toPrecision(2);
                         var testType = `Time:${time}seconds   Language:English`;
                         var userId = document.getElementById("user_id").textContent;
-                        
+
                         var postrecord = {
                             wpm: wpm,
                             accuracy: roundoffAccuracy,
@@ -174,35 +174,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
                                 })
                             render();
-                            setTimeout(()=>{
+                            setTimeout(() => {
                                 fetch("http://127.0.0.1:8000/api/records/")
-                                .then(response => response.json())
-                                .then(data => {
-                                    console.log(data)
-                                    let n = data.length;
-                                    var wpmArr = [];
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log(data)
+                                        let n = data.length;
+                                        var wpmArr = [];
 
-                                    for (let i = 0; i < n; i++) {
-                                        var record = data[i];
-                                        
-                                        if(record.user ==userId){
-                                            wpmArr.push(record.wpm);
+                                        for (let i = 0; i < n; i++) {
+                                            var record = data[i];
+
+                                            if (record.user == userId) {
+                                                wpmArr.push(record.wpm);
+                                            }
+
+
                                         }
+                                        wpmArr.sort((a, b) => b - a);
+                                        console.log(wpmArr)
+                                        document.getElementById("#1").innerText = `1. WPM: ${wpmArr[0]}`;
+                                        document.getElementById("#2").innerText = `2. WPM: ${wpmArr[1]}`;
+                                        document.getElementById("#3").innerText = `3. WPM: ${wpmArr[2]}`;
+                                        document.getElementById("#4").innerText = `4. WPM: ${wpmArr[3]}`;
+                                        document.getElementById("#5").innerText = `5. WPM: ${wpmArr[4]}`;
+                                        render();
+                                    })
+                                    .catch(error => console.error('Error:', error));
+                            }, 500);
 
-                                       
-                                    }
-                                    wpmArr.sort((a, b) => b - a);
-                                    console.log(wpmArr)
-                                    document.getElementById("#1").innerText = `1. WPM: ${wpmArr[0]}`;
-                                    document.getElementById("#2").innerText = `2. WPM: ${wpmArr[1]}`;
-                                    document.getElementById("#3").innerText = `3. WPM: ${wpmArr[2]}`;
-                                    document.getElementById("#4").innerText = `4. WPM: ${wpmArr[3]}`;
-                                    document.getElementById("#5").innerText = `5. WPM: ${wpmArr[4]}`;
-                                    render();
-                                })
-                                .catch(error => console.error('Error:', error));
-                            },500);
-                            
                         }
                         else {
                             render();
@@ -223,12 +223,12 @@ document.addEventListener('DOMContentLoaded', function () {
             var test = inputText.value;
 
             let n = test.length;
-            
+
 
             if (event.code === 'Space') {
 
                 if (para1[n - 1] == " ") {
-                    
+
                     realTest.innerText = realTest.innerText + para1.slice(n);
                 }
                 else {
@@ -245,14 +245,14 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     }
 
-                    
-                        inputText.value = test + " ".repeat(spaceindex - p + 1);
-                        var sentence = inputText.value.trim();
-                        realTest.innerText = sentence + testReal.slice(sentence.length);
-                        inputText.selectionStart = spaceindex + 1;
-                        inputText.selectionEnd = spaceindex + 1;
-                    
-                    p+=spaceindex - p+1;
+
+                    inputText.value = test + " ".repeat(spaceindex - p + 1);
+                    var sentence = inputText.value.trim();
+                    realTest.innerText = sentence + testReal.slice(sentence.length);
+                    inputText.selectionStart = spaceindex + 1;
+                    inputText.selectionEnd = spaceindex + 1;
+
+                    p += spaceindex - p + 1;
                     console.log(p)
 
                 }
@@ -260,49 +260,49 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
             }
-            
+
             else {
-                if (para1[n - 1] === " "){
+                if (para1[n - 1] === " ") {
                     if (event.key != "Backspace") {
                         console.log('check')
                         realTest.innerText = test + " " + para1.slice(n);
                         var strtExtra = para1.slice(0, n - 2);
                         var endExtra = para1.slice(n - 2);
                         para1 = strtExtra + " " + endExtra;
-                        
+
                     }
-                    else{
-                        if(para1[n-1]===" " && n>0 && test[n-1]!=" " ){
-                            var previous = realTest.innerText;                    
-                            realTest.innerText = previous.slice(0, n) + " "+ previous.slice(n+2);
+                    else {
+                        if (para1[n - 1] === " " && n > 0 && test[n - 1] != " ") {
+                            var previous = realTest.innerText;
+                            realTest.innerText = previous.slice(0, n) + " " + previous.slice(n + 2);
                         }
-                        else{
+                        else {
                             realTest.innerText = previous.slice(0, n) + previous.slice(n);
-                        }                   
+                        }
                     }
                 }
                 else {
                     var previous = realTest.innerText;
-                    if (event.key != "Backspace"){
+                    if (event.key != "Backspace") {
 
 
                         if (previous.slice(0, n - 1) == "") {
                             realTest.innerText = event.key + para1.slice(n);
                         }
                         else {
-                            realTest.innerText = previous.slice(0, n - 1) + event.key + para1.slice(n); 
+                            realTest.innerText = previous.slice(0, n - 1) + event.key + para1.slice(n);
                         }
-                        
-                        
+
+
                     }
                     else {
-                        
+
                         realTest.innerText = previous.slice(0, n) + previous.slice(n);
                     }
 
                 }
             }
-            
+
         }
 
 
@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ex1.addEventListener("click", (event) => ex1Click(event, wordarray));
     function ex1Click(event, wordarray) {
         event.preventDefault();
-        
+
         count1 = 0;
         inputText.value = "";
         displayTimer.innerText = 15;
@@ -342,17 +342,17 @@ document.addEventListener('DOMContentLoaded', function () {
     ex2.addEventListener("click", (event) => ex2Click(event, wordarray));
     function ex2Click(event, wordarray) {
         event.preventDefault();
-        
+
         count1 = 0;
         inputText.value = "";
         displayTimer.innerText = 30;
         paragraphGenerator(30, wordarray);
-        
+
     }
     ex3.addEventListener("click", (event) => ex3Click(event, wordarray));
     function ex3Click(event, wordarray) {
         event.preventDefault();
-        
+
         count1 = 0;
         inputText.value = "";
         displayTimer.innerText = 60;
@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ex4.addEventListener("click", (event) => ex4Click(event, wordarray));
     function ex4Click(event, wordarray) {
         event.preventDefault();
-        
+
         count1 = 0;
         inputText.value = "";
         displayTimer.innerText = 120;
@@ -401,13 +401,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     hour = timeArr[0];
                     minute = timeArr[1];
                     second = timeArr[2];
-                    time = Number(hour) * 3600 + Number(minute)*60 + Number(second);
+                    time = Number(hour) * 3600 + Number(minute) * 60 + Number(second);
                 }
                 else if (timeArr.length == 2) {
                     hour = 0;
                     minute = timeArr[0];
                     second = timeArr[1];
-                    time = Number(minute)*60 + Number(second);
+                    time = Number(minute) * 60 + Number(second);
                 }
                 else if (timeArr.length == 1) {
                     hour = 0;
@@ -415,7 +415,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     second = timeArr[0];
                     time = second;
                 }
-                
+
 
                 timerdisp.innerText = `${hour}hour, ${minute}minute and ${second}seconds`;
                 okBtn.addEventListener("click", function (event) {
