@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var wordarray = [];
     var time = 15;
 
-    fetch("http://priyanshudjango.pythonanywhere.com/static/dictionary.txt")
+    fetch("https://priyanshudjango.pythonanywhere.com/static/dictionary.txt")
         .then(response => {
             if (!response.ok) {
                 throw new Error('Something wrong with receiving the file' + response.status)
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         //ummm
 
                         if (logged_in) {
-                            fetch("http://priyanshudjango.pythonanywhere.com/api/records/", {
+                            fetch("https://priyanshudjango.pythonanywhere.com/api/records/", {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 })
                             render();
                             setTimeout(() => {
-                                fetch("http://priyanshudjango.pythonanywhere.com/api/records/")
+                                fetch("https://priyanshudjango.pythonanywhere.com/api/records/")
                                     .then(response => response.json())
                                     .then(data => {
                                         console.log(data)
