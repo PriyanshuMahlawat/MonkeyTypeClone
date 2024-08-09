@@ -7,7 +7,7 @@
 #para {
     font-size: 25px;
     font-family:'Courier New', Courier, monospace;
-    font-weight: 500;
+    font-weight: bolder;
     color: brown;
     caret-color: rgb(161, 7, 7);
     
@@ -32,13 +32,14 @@
 #real-test {
     font-size: 25px;
     font-family: 'Courier New', Courier, monospace;
-    color: rgb(221, 85, 85); 
+    font-weight: bolder;
+    color:#B5C18E;
     height: 187px;
     width: 100%; 
     margin: 0; 
     padding: 10px; 
     position: relative; 
-    font-weight: 500;
+    
     top: 0; 
     left: 0; 
     z-index: 1; 
@@ -58,12 +59,13 @@ body{
     border-radius: 20px;
     font-family: 'Lato',sans-serif;
     height: 30px;
-    margin-left: 480px;
+    margin-left: 600px;
     font-weight: lighter;
     font-size: 12px;
-}#hidden{
-    display: none;
+    width: 200px;
 }
+
+
 a{
    color: #ed6a5a; 
    text-decoration: none;
@@ -85,3 +87,4 @@ a{
 #socials-table th{
     width: 100px;
 }
+
