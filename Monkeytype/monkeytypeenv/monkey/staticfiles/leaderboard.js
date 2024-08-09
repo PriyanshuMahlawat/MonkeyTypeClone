@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded",function(){
 
-    fetch("http://127.0.0.1:8000/api/recordsalias")
+    fetch("http://priyanshudjango.pythonanywhere.com/api/recordsalias")
     .then(response => response.json())
     .then(data=> {
         leaderboard(data);
