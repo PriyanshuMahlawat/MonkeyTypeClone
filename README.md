@@ -14,7 +14,6 @@ Bug2 : when pressed space in between a word for first time it works fine but whe
 
 Overall, i couldnt find how to fix it, maybe the approach was not good, but I had fun time building it and learning new stuff.
 
-![Screenshot of the app](Monkeytype/monkeytypeenv/monkey/Screenshot 2024-08-12 224717.png)
-
+![Screenshot of the app](./Monkeytype/monkeytypeenv/monkey/appss.png)
 
 
