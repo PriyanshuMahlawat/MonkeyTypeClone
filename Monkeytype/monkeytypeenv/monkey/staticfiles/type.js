@@ -77,30 +77,15 @@ document.addEventListener('DOMContentLoaded', function () {
         let previous_input = "";
 
 
-
-
-        inputText.addEventListener("keyup", function (event) {
-
-
-            keyupTxtarea(event);
-
-        });
-
-
-
-
-
         function keyupTxtarea(event) {
-
-
-
             if (event.key == "Enter") {
                 event.preventDefault();
                 event.stopPropagation();
                 return;
             }
+        
             if (count1 == 0) {
-
+                // Start timer logic (unchanged)
                 let startTime = Date.now();
                 let endTime = startTime + time * 1000;
 
@@ -218,92 +203,72 @@ document.addEventListener('DOMContentLoaded', function () {
                 let timerstopId = setInterval(timerMechanism, 1000);
                 count1++;
             }
-
-
+        
             var test = inputText.value;
-
             let n = test.length;
-
-
+        
+            // Prevent rapid key repeat
+            if (event.repeat) {
+                event.preventDefault();
+                return;
+            }
+        
             if (event.code === 'Space') {
-
-                if (para1[n - 1] == " ") {
-
-                    realTest.innerText = realTest.innerText + para1.slice(n);
-                }
-                else {
-                    spaceindex = 0;
-                    let p = n;
-                    console.log(p)
-                    var testReal = realTest.innerText;
-                    console.log(testReal)
-                    for (let i = p; i < testReal.length; i++) {
-                        if (testReal[i] == " ") {
-                            spaceindex = i;
-                            console.log(`spaceindex= ${spaceindex}`)
-                            break;
-                        }
-                    }
-
-
-                    inputText.value = test + " ".repeat(spaceindex - p + 1);
-                    var sentence = inputText.value.trim();
-                    realTest.innerText = sentence + testReal.slice(sentence.length);
-                    inputText.selectionStart = spaceindex + 1;
-                    inputText.selectionEnd = spaceindex + 1;
-
-                    p += spaceindex - p + 1;
-                    console.log(p)
-
-                }
-
-
-
+                handleSpace(n);
+            } else {
+                handleOtherKeys(event, n);
             }
-
-            else {
-                if (para1[n - 1] === " ") {
-                    if (event.key != "Backspace") {
-                        console.log('check')
-                        realTest.innerText = test + " " + para1.slice(n);
-                        var strtExtra = para1.slice(0, n - 2);
-                        var endExtra = para1.slice(n - 2);
-                        para1 = strtExtra + " " + endExtra;
-
-                    }
-                    else {
-                        if (para1[n - 1] === " " && n > 0 && test[n - 1] != " ") {
-                            var previous = realTest.innerText;
-                            realTest.innerText = previous.slice(0, n) + " " + previous.slice(n + 2);
-                        }
-                        else {
-                            realTest.innerText = previous.slice(0, n) + previous.slice(n);
-                        }
-                    }
-                }
-                else {
-                    var previous = realTest.innerText;
-                    if (event.key != "Backspace") {
-
-
-                        if (previous.slice(0, n - 1) == "") {
-                            realTest.innerText = event.key + para1.slice(n);
-                        }
-                        else {
-                            realTest.innerText = previous.slice(0, n - 1) + event.key + para1.slice(n);
-                        }
-
-
-                    }
-                    else {
-
-                        realTest.innerText = previous.slice(0, n) + previous.slice(n);
-                    }
-
-                }
-            }
-
+        
+            // Update real-time comparison
+            updateComparison();
         }
+        
+        function handleSpace(n) {
+            if (para1[n - 1] == " ") {
+                realTest.innerText = realTest.innerText + para1.slice(n);
+            } else {
+                let spaceIndex = para1.indexOf(' ', n);
+                if (spaceIndex === -1) spaceIndex = para1.length;
+                
+                inputText.value = para1.slice(0, spaceIndex) + " ";
+                realTest.innerText = para1;
+                
+                inputText.selectionStart = inputText.selectionEnd = spaceIndex + 1;
+            }
+        }
+        
+        function handleOtherKeys(event, n) {
+            if (event.key === "Backspace") {
+                realTest.innerText = para1;
+            } else if (n < para1.length) {
+                let updatedText = para1.slice(0, n - 1) + event.key + para1.slice(n);
+                realTest.innerText = updatedText;
+            }
+        }
+        
+        function updateComparison() {
+            let typed = inputText.value;
+            let compared = '';
+            for (let i = 0; i < typed.length; i++) {
+                if (typed[i] === para1[i]) {
+                    compared += '<span class="correct">' + typed[i] + '</span>';
+                } else {
+                    compared += '<span class="incorrect">' + para1[i] + '</span>';
+                }
+            }
+            compared += para1.slice(typed.length);
+            realTest.innerHTML = compared;
+        }
+        
+        inputText.addEventListener("input", function(event) {
+            keyupTxtarea(event);
+        });
+
+        
+
+
+
+
 
 
     }
