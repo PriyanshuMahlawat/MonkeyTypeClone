@@ -1,8 +1,8 @@
 # MonkeyTypeClone
 
 https://priyanshudjango.pythonanywhere.com/
-
-It's kind of a clone for monkeytype website for typing speed test made with django backend and js for frontend.
+My very first time building something from dirt. 
+It's  a clone for monkeytype website for typing speed test made with django backend and js for frontend.
 The API's ,Logins,templates, django_restframework, the forms all work fine.
 
 Tried a differnet approach from other typing test apps for the typing logic, but couldnt fix the three to four bugs in typing bugs in it, if you find this approach intereseting any inputs for improvement are appreciated.
