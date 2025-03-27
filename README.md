@@ -1,4 +1,4 @@
-🐵 MonkeyTypeClone - Typing Speed Test App
+MonkeyTypeClone - Typing Speed Test App
 
 🚀 About the App
 
