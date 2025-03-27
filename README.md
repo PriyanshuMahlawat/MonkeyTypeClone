@@ -4,6 +4,16 @@
 
 MonkeyTypeClone is a typing speed test web app built from scratch using Django for the backend and JavaScript for the frontend. Unlike traditional typing apps, this project implements a unique typing logic to track user input and calculate accuracy dynamically.
 
+
+🔧 Known Issues & Bugs 🐛
+
+1️⃣ Fast Typing Issue - When typing too fast, the system sometimes fails to register inputs correctly.
+
+2️⃣ Extra Space Issue - Pressing space in the middle of a word once works fine, but doing it multiple times within the same session causes issues in paragraph formatting.
+
+📌 Any insights or suggestions for improving the typing logic are welcome!
+
+
 🌍 Live at: https://priyanshudjango.pythonanywhere.com/ 🚀
 
 🔥 Features
@@ -37,14 +47,6 @@ HTML, CSS, JavaScript - Core UI components and dynamic interactions.
 Hosting & Storage ☁️
 
 PythonAnywhere - Web hosting for the project.
-
-🔧 Known Issues & Bugs 🐛
-
-1️⃣ Fast Typing Issue - When typing too fast, the system sometimes fails to register inputs correctly.
-
-2️⃣ Extra Space Issue - Pressing space in the middle of a word once works fine, but doing it multiple times within the same session causes issues in paragraph formatting.
-
-📌 Any insights or suggestions for improving the typing logic are welcome!
 
 🛠️ Installation & Setup
 
