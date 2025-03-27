@@ -61,301 +61,178 @@ document.addEventListener('DOMContentLoaded', function () {
             para += " ";
         }
 
-        var downtime = 0;
-        var uptime = 0;
-
         realTest.innerText = para;
-        let spaceindex = 0;
-        var para1 = para;
-        let previous_input = "";
+        inputText.value = "";
+        displayTimer.innerText = time;
 
-        function keyupTxtarea(event) {
-            if (event.key == "Enter") {
-                event.preventDefault();
-                event.stopPropagation();
-                return;
-            }
+        let startTime, endTime, timerInterval;
 
-            if (count1 == 0) {
-                let startTime = Date.now();
-                let endTime = startTime + time * 1000;
-
-                function timerMechanism() {
-                    let currentTime = Date.now();
-                    let remainingTime = Math.max(0, Math.round((endTime - currentTime) / 1000));
-                    displayTimer.innerText = remainingTime;
-                    if (remainingTime <= 0) {
-                        clearInterval(timerstopId);
-
-                        var logged_in = document.getElementById("user-alias");
-
-                        var typed = inputText.value.split(" ");
-                        let wordsTyped = typed.length;
-                        let paraArr = para.split(" ");
-                        let count = 0;
-                        for (let i = 0; i < wordsTyped; i++) {
-                            if (typed[i] == paraArr[i]) {
-                                count++;
-                            }
-                        }
-                        var wpm = count * 60 / time;
-                        var rawSpeed = wordsTyped * 60 / time;
-                        var accuracy = count / wordsTyped * 100;
-                        var roundoffAccuracy = accuracy.toPrecision(2);
-                        var testType = `Time:${time}seconds   Language:English`;
-                        var userId = document.getElementById("user_id").textContent;
-
-                        var postrecord = {
-                            wpm: wpm,
-                            accuracy: roundoffAccuracy,
-                            time_typing: time,
-                            user: userId,
-                        }
-
-                        function render() {
-                            var typeHtml = document.getElementById("typeHtml")
-                            var resultHtml = document.getElementById("resultHtml")
-                            typeHtml.style.display = "none";
-                            resultHtml.style.display = "block";
-                            document.getElementById("wpm").innerText = `WPM  ${wpm}`;
-                            document.getElementById("accuracy").innerText = `Accuracy  ${roundoffAccuracy}%`;
-                            document.getElementById("rawspeed").innerText = `Raw Speed  ${rawSpeed}`;
-                            document.getElementById("testtype").innerText = `Test Type:  ${testType}`;
-                        }
-
-                        if (logged_in) {
-                            fetch("https://priyanshudjango.pythonanywhere.com/api/records/", {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRFToken': csrftoken,
-                                },
-                                body: JSON.stringify(postrecord)
-                            })
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('not ok');
-                                    }
-                                    return response.json();
-                                })
-                                .then(data => {
-
-                                })
-                                .catch(error => {
-                                    console.log('Error:', error);
-                                })
-                            render();
-                            setTimeout(() => {
-                                fetch("https://priyanshudjango.pythonanywhere.com/api/records/")
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        console.log(data)
-                                        let n = data.length;
-                                        var wpmArr = [];
-
-                                        for (let i = 0; i < n; i++) {
-                                            var record = data[i];
-                                            if (record.user == userId) {
-                                                wpmArr.push(record.wpm);
-                                            }
-                                        }
-                                        wpmArr.sort((a, b) => b - a);
-                                        console.log(wpmArr)
-                                        document.getElementById("#1").innerText = `1. WPM: ${wpmArr[0]}`;
-                                        document.getElementById("#2").innerText = `2. WPM: ${wpmArr[1]}`;
-                                        document.getElementById("#3").innerText = `3. WPM: ${wpmArr[2]}`;
-                                        document.getElementById("#4").innerText = `4. WPM: ${wpmArr[3]}`;
-                                        document.getElementById("#5").innerText = `5. WPM: ${wpmArr[4]}`;
-                                        render();
-                                    })
-                                    .catch(error => console.error('Error:', error));
-                            }, 500);
-                        }
-                        else {
-                            render();
-                        }
-                    }
-                }
-                let timerstopId = setInterval(timerMechanism, 1000);
-                count1++;
-            }
-
-            var test = inputText.value;
-            let n = test.length;
-
-            if (event.repeat) {
-                event.preventDefault();
-                return;
-            }
-
-            if (event.code === 'Space') {
-                handleSpace(n);
-            } else {
-                handleOtherKeys(event, n);
-            }
-
-            updateComparison();
+        function startTest() {
+            startTime = Date.now();
+            endTime = startTime + time * 1000;
+            timerInterval = setInterval(updateTimer, 1000);
         }
 
-        function handleSpace(n) {
-            if (para1[n - 1] == " ") {
-                realTest.innerText = realTest.innerText + para1.slice(n);
-            } else {
-                let spaceIndex = para1.indexOf(' ', n);
-                if (spaceIndex === -1) spaceIndex = para1.length;
-                
-                inputText.value = para1.slice(0, spaceIndex) + " ";
-                realTest.innerText = para1;
-                
-                inputText.selectionStart = inputText.selectionEnd = spaceIndex + 1;
+        function updateTimer() {
+            let remainingTime = Math.max(0, Math.round((endTime - Date.now()) / 1000));
+            displayTimer.innerText = remainingTime;
+            if (remainingTime <= 0) {
+                clearInterval(timerInterval);
+                endTest();
             }
         }
 
-        function handleOtherKeys(event, n) {
-            if (event.key === "Backspace") {
-                realTest.innerText = para1;
-            } else if (n < para1.length) {
-                let updatedText = para1.slice(0, n - 1) + event.key + para1.slice(n);
-                realTest.innerText = updatedText;
-            }
-        }
-
-        function updateComparison() {
+        function updateDisplay() {
             let typed = inputText.value;
             let compared = '';
-            for (let i = 0; i < typed.length; i++) {
-                if (typed[i] === para1[i]) {
-                    compared += '<span class="correct">' + typed[i] + '</span>';
+            for (let i = 0; i < para.length; i++) {
+                if (i < typed.length) {
+                    if (typed[i] === para[i]) {
+                        compared += '<span class="correct">' + para[i] + '</span>';
+                    } else {
+                        compared += '<span class="incorrect">' + para[i] + '</span>';
+                    }
                 } else {
-                    compared += '<span class="incorrect">' + para1[i] + '</span>';
+                    compared += para[i];
                 }
             }
-            compared += para1.slice(typed.length);
             realTest.innerHTML = compared;
         }
 
-        inputText.addEventListener("input", function(event) {
-            keyupTxtarea(event);
+        function endTest() {
+            var typed = inputText.value.trim().split(/\s+/);
+            var original = para.trim().split(/\s+/);
+            var correctWords = typed.filter((word, index) => word === original[index]).length;
+            var wpm = Math.round((correctWords / time) * 60);
+            var accuracy = (correctWords / typed.length) * 100;
+            var roundoffAccuracy = accuracy.toFixed(2);
+            var testType = `Time:${time}seconds   Language:English`;
+            var userId = document.getElementById("user_id").textContent;
+
+            var postrecord = {
+                wpm: wpm,
+                accuracy: roundoffAccuracy,
+                time_typing: time,
+                user: userId,
+            }
+
+            function render() {
+                var typeHtml = document.getElementById("typeHtml")
+                var resultHtml = document.getElementById("resultHtml")
+                typeHtml.style.display = "none";
+                resultHtml.style.display = "block";
+                document.getElementById("wpm").innerText = `WPM  ${wpm}`;
+                document.getElementById("accuracy").innerText = `Accuracy  ${roundoffAccuracy}%`;
+                document.getElementById("rawspeed").innerText = `Raw Speed  ${(typed.length / time) * 60}`;
+                document.getElementById("testtype").innerText = `Test Type:  ${testType}`;
+            }
+
+            var logged_in = document.getElementById("user-alias");
+            if (logged_in) {
+                fetch("https://priyanshudjango.pythonanywhere.com/api/records/", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: JSON.stringify(postrecord)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    render();
+                    setTimeout(() => {
+                        fetch("https://priyanshudjango.pythonanywhere.com/api/records/")
+                            .then(response => response.json())
+                            .then(data => {
+                                let wpmArr = data.filter(record => record.user == userId)
+                                                 .map(record => record.wpm)
+                                                 .sort((a, b) => b - a);
+                                for (let i = 1; i <= 5; i++) {
+                                    document.getElementById(`#${i}`).innerText = `${i}. WPM: ${wpmArr[i-1] || '-'}`;
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    }, 500);
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
+            } else {
+                render();
+            }
+        }
+
+        inputText.addEventListener('input', function(event) {
+            if (!startTime) startTest();
+            updateDisplay();
         });
     }
 
+    // Time selection event listeners
     var timeEl = document.getElementById("time-link");
     var ex1 = document.getElementById("ex1");
-    var ex2 = document.getElementById("ex2")
-    var ex3 = document.getElementById("ex3")
-    var ex4 = document.getElementById("ex4")
-    var ex5 = document.getElementById("ex5")
+    var ex2 = document.getElementById("ex2");
+    var ex3 = document.getElementById("ex3");
+    var ex4 = document.getElementById("ex4");
+    var ex5 = document.getElementById("ex5");
+
     timeEl.addEventListener("click", function (event) {
         event.preventDefault();
         document.getElementById("hidden").style.display = "block";
-        ex1.style.display = "table-cell";
-        ex2.style.display = "table-cell";
-        ex3.style.display = "table-cell";
-        ex4.style.display = "table-cell";
-        ex5.style.display = "table-cell";
-    })
+        [ex1, ex2, ex3, ex4, ex5].forEach(el => el.style.display = "table-cell");
+    });
 
-    ex1.addEventListener("click", (event) => ex1Click(event, wordarray));
-    function ex1Click(event, wordarray) {
-        event.preventDefault();
-        count1 = 0;
-        inputText.value = "";
-        displayTimer.innerText = 15;
-        paragraphGenerator(15, wordarray);
-    }
+    [ex1, ex2, ex3, ex4].forEach((el, index) => {
+        el.addEventListener("click", (event) => {
+            event.preventDefault();
+            count1 = 0;
+            inputText.value = "";
+            let times = [15, 30, 60, 120];
+            displayTimer.innerText = times[index];
+            paragraphGenerator(times[index], wordarray);
+        });
+    });
 
-    ex2.addEventListener("click", (event) => ex2Click(event, wordarray));
-    function ex2Click(event, wordarray) {
-        event.preventDefault();
-        count1 = 0;
-        inputText.value = "";
-        displayTimer.innerText = 30;
-        paragraphGenerator(30, wordarray);
-    }
-
-    ex3.addEventListener("click", (event) => ex3Click(event, wordarray));
-    function ex3Click(event, wordarray) {
-        event.preventDefault();
-        count1 = 0;
-        inputText.value = "";
-        displayTimer.innerText = 60;
-        paragraphGenerator(60, wordarray);
-    }
-
-    ex4.addEventListener("click", (event) => ex4Click(event, wordarray));
-    function ex4Click(event, wordarray) {
-        event.preventDefault();
-        count1 = 0;
-        inputText.value = "";
-        displayTimer.innerText = 120;
-        paragraphGenerator(120, wordarray);
-    }
-
+    // Custom timer logic
     var timerTxt = document.getElementById("timer-txtarea");
     var timerdisp = document.getElementById("timer-input");
     var okBtn = document.getElementById("ok");
-    var hour = 0;
-    var minute = 0;
-    var second = 0;
-    ex5.addEventListener("click", (event) => ex5Click(event, wordarray));
-    function ex5Click(event, wordarray) {
+
+    ex5.addEventListener("click", (event) => {
         event.preventDefault();
         document.getElementById("custom-timer-modal").style.display = "block";
-        let timestr = "";
-        timerTxt.addEventListener("keyup", function (event) {
-            timestr = timerTxt.value;
-            if (/^\d+$/.test(timestr) || timestr.includes('h') || timestr.includes('s') || timestr.includes('m')) {
+    });
+
+    timerTxt.addEventListener("input", function () {
+        let timestr = timerTxt.value;
+        if (/^\d+$/.test(timestr) || timestr.includes('h') || timestr.includes('m') || timestr.includes('s')) {
+            let [hour, minute, second] = [0, 0, 0];
+            let time = 0;
+
+            let parts = timestr.match(/(\d+h)?(\d+m)?(\d+s)?/);
+            if (parts[1]) hour = parseInt(parts[1]);
+            if (parts[2]) minute = parseInt(parts[2]);
+            if (parts[3]) second = parseInt(parts[3]);
+
+            time = hour * 3600 + minute * 60 + second;
+
+            timerdisp.innerText = `${hour}hour, ${minute}minute and ${second}seconds`;
+            displayTimer.innerText = time;
+
+            okBtn.onclick = function(event) {
                 event.preventDefault();
-
-                let timestr1 = timestr.replace('h', " ");
-                let timestr2 = timestr1.replace('m', " ");
-                let timestrFinal = timestr2.replace('s', " ");
-
-                let timeArr = timestrFinal.trim().split(" ");
-                if (timeArr.length == 0) {
-                    hour = 999;
-                    minute = 999;
-                    second = 999;
-                    time = 9999;
-                }
-                else if (timeArr.length == 3) {
-                    hour = timeArr[0];
-                    minute = timeArr[1];
-                    second = timeArr[2];
-                    time = Number(hour) * 3600 + Number(minute) * 60 + Number(second);
-                }
-                else if (timeArr.length == 2) {
-                    hour = 0;
-                    minute = timeArr[0];
-                    second = timeArr[1];
-                    time = Number(minute) * 60 + Number(second);
-                }
-                else if (timeArr.length == 1) {
-                    hour = 0;
-                    minute = 0;
-                    second = timeArr[0];
-                    time = second;
-                }
-
-                timerdisp.innerText = `${hour}hour, ${minute}minute and ${second}seconds`;
-                okBtn.addEventListener("click", function (event) {
-                    event.preventDefault();
-                    document.getElementById("custom-timer-modal").style.display = "none";
-                    document.getElementById("hidden").style.display = "none";
-                    ex1.style.display = "none";
-                    ex2.style.display = "none";
-                    ex3.style.display = "none";
-                    ex4.style.display = "none";
-                    ex5.style.display = "none";
-                })
-                displayTimer.innerText = time;
+                document.getElementById("custom-timer-modal").style.display = "none";
+                document.getElementById("hidden").style.display = "none";
+                [ex1, ex2, ex3, ex4, ex5].forEach(el => el.style.display = "none");
                 paragraphGenerator(time, wordarray);
-            }
-            else {
-                timerTxt.value = "";
-            }
-        })
-    }
-
-    inputText.value = "";
-})
+            };
+        } else {
+            timerTxt.value = "";
+        }
+    });
+});
