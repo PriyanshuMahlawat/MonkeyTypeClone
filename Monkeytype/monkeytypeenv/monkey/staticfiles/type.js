@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return cookieValue;
     }
-    //hello
 
     const csrftoken = getCookie('csrftoken');
     var wordarray = [];
@@ -23,16 +22,12 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => {
             if (!response.ok) {
                 throw new Error('Something wrong with receiving the file' + response.status)
-
             }
             return response.text();
-        }
-
-        )
+        })
         .then(data => {
             wordarray = data.split('\n').map(line => line.trim()).filter(line => line);
             paragraphGenerator(time, wordarray);
-
         })
 
     function number(min, max) {
@@ -40,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (min <= n && n <= max) {
             return n
         }
-
     }
 
     var realTest = document.getElementById("real-test");
@@ -48,26 +42,25 @@ document.addEventListener('DOMContentLoaded', function () {
     let displayTimer = document.getElementById("timer");
     displayTimer.innerText = time;
 
-
     document.getElementById("select-lang").addEventListener("click", function () {
-        alert("It's not wokring bcz its paid!");
+        alert("It's not working bcz its paid!");
     })
+
     let count1 = 0;
     let para = "";
+
     function paragraphGenerator(newTime, wordarray) {
         time = newTime;
         console.log('paragen', time)
         para = "";
         var words = time * 20;
 
-
         for (var i = 0; i < words; i++) {
             var random = number(1, 470);
-
             para += wordarray[random];
             para += " ";
-
         }
+
         var downtime = 0;
         var uptime = 0;
 
@@ -76,30 +69,25 @@ document.addEventListener('DOMContentLoaded', function () {
         var para1 = para;
         let previous_input = "";
 
-
         function keyupTxtarea(event) {
             if (event.key == "Enter") {
                 event.preventDefault();
                 event.stopPropagation();
                 return;
             }
-        
+
             if (count1 == 0) {
-                // Start timer logic (unchanged)
                 let startTime = Date.now();
                 let endTime = startTime + time * 1000;
 
-                // Define the timer mechanism function
                 function timerMechanism() {
                     let currentTime = Date.now();
                     let remainingTime = Math.max(0, Math.round((endTime - currentTime) / 1000));
                     displayTimer.innerText = remainingTime;
-                    // Stop the interval when the timer reaches 0
                     if (remainingTime <= 0) {
                         clearInterval(timerstopId);
 
                         var logged_in = document.getElementById("user-alias");
-
 
                         var typed = inputText.value.split(" ");
                         let wordsTyped = typed.length;
@@ -123,8 +111,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             time_typing: time,
                             user: userId,
                         }
-                        function render() {
 
+                        function render() {
                             var typeHtml = document.getElementById("typeHtml")
                             var resultHtml = document.getElementById("resultHtml")
                             typeHtml.style.display = "none";
@@ -134,7 +122,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             document.getElementById("rawspeed").innerText = `Raw Speed  ${rawSpeed}`;
                             document.getElementById("testtype").innerText = `Test Type:  ${testType}`;
                         }
-                        //ummm
 
                         if (logged_in) {
                             fetch("https://priyanshudjango.pythonanywhere.com/api/records/", {
@@ -148,7 +135,6 @@ document.addEventListener('DOMContentLoaded', function () {
                                 .then(response => {
                                     if (!response.ok) {
                                         throw new Error('not ok');
-                                        
                                     }
                                     return response.json();
                                 })
@@ -157,7 +143,6 @@ document.addEventListener('DOMContentLoaded', function () {
                                 })
                                 .catch(error => {
                                     console.log('Error:', error);
-
                                 })
                             render();
                             setTimeout(() => {
@@ -170,12 +155,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                                         for (let i = 0; i < n; i++) {
                                             var record = data[i];
-
                                             if (record.user == userId) {
                                                 wpmArr.push(record.wpm);
                                             }
-
-
                                         }
                                         wpmArr.sort((a, b) => b - a);
                                         console.log(wpmArr)
@@ -188,42 +170,33 @@ document.addEventListener('DOMContentLoaded', function () {
                                     })
                                     .catch(error => console.error('Error:', error));
                             }, 500);
-
                         }
                         else {
                             render();
                         }
-
-
-
-
-
                     }
                 }
-                // Start the interval timer
                 let timerstopId = setInterval(timerMechanism, 1000);
                 count1++;
             }
-        
+
             var test = inputText.value;
             let n = test.length;
-        
-            // Prevent rapid key repeat
+
             if (event.repeat) {
                 event.preventDefault();
                 return;
             }
-        
+
             if (event.code === 'Space') {
                 handleSpace(n);
             } else {
                 handleOtherKeys(event, n);
             }
-        
-            // Update real-time comparison
+
             updateComparison();
         }
-        
+
         function handleSpace(n) {
             if (para1[n - 1] == " ") {
                 realTest.innerText = realTest.innerText + para1.slice(n);
@@ -237,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 inputText.selectionStart = inputText.selectionEnd = spaceIndex + 1;
             }
         }
-        
+
         function handleOtherKeys(event, n) {
             if (event.key === "Backspace") {
                 realTest.innerText = para1;
@@ -246,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 realTest.innerText = updatedText;
             }
         }
-        
+
         function updateComparison() {
             let typed = inputText.value;
             let compared = '';
@@ -260,19 +233,12 @@ document.addEventListener('DOMContentLoaded', function () {
             compared += para1.slice(typed.length);
             realTest.innerHTML = compared;
         }
-        
+
         inputText.addEventListener("input", function(event) {
             keyupTxtarea(event);
         });
-
-        
-
-
-
-
-
-
     }
+
     var timeEl = document.getElementById("time-link");
     var ex1 = document.getElementById("ex1");
     var ex2 = document.getElementById("ex2")
@@ -281,59 +247,49 @@ document.addEventListener('DOMContentLoaded', function () {
     var ex5 = document.getElementById("ex5")
     timeEl.addEventListener("click", function (event) {
         event.preventDefault();
-
         document.getElementById("hidden").style.display = "block";
         ex1.style.display = "table-cell";
         ex2.style.display = "table-cell";
         ex3.style.display = "table-cell";
         ex4.style.display = "table-cell";
         ex5.style.display = "table-cell";
-
-
-
     })
-
-
 
     ex1.addEventListener("click", (event) => ex1Click(event, wordarray));
     function ex1Click(event, wordarray) {
         event.preventDefault();
-
         count1 = 0;
         inputText.value = "";
         displayTimer.innerText = 15;
         paragraphGenerator(15, wordarray);
-
     }
+
     ex2.addEventListener("click", (event) => ex2Click(event, wordarray));
     function ex2Click(event, wordarray) {
         event.preventDefault();
-
         count1 = 0;
         inputText.value = "";
         displayTimer.innerText = 30;
         paragraphGenerator(30, wordarray);
-
     }
+
     ex3.addEventListener("click", (event) => ex3Click(event, wordarray));
     function ex3Click(event, wordarray) {
         event.preventDefault();
-
         count1 = 0;
         inputText.value = "";
         displayTimer.innerText = 60;
         paragraphGenerator(60, wordarray);
     }
+
     ex4.addEventListener("click", (event) => ex4Click(event, wordarray));
     function ex4Click(event, wordarray) {
         event.preventDefault();
-
         count1 = 0;
         inputText.value = "";
         displayTimer.innerText = 120;
         paragraphGenerator(120, wordarray);
     }
-
 
     var timerTxt = document.getElementById("timer-txtarea");
     var timerdisp = document.getElementById("timer-input");
@@ -350,7 +306,6 @@ document.addEventListener('DOMContentLoaded', function () {
             timestr = timerTxt.value;
             if (/^\d+$/.test(timestr) || timestr.includes('h') || timestr.includes('s') || timestr.includes('m')) {
                 event.preventDefault();
-
 
                 let timestr1 = timestr.replace('h', " ");
                 let timestr2 = timestr1.replace('m', " ");
@@ -382,7 +337,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     time = second;
                 }
 
-
                 timerdisp.innerText = `${hour}hour, ${minute}minute and ${second}seconds`;
                 okBtn.addEventListener("click", function (event) {
                     event.preventDefault();
@@ -400,15 +354,8 @@ document.addEventListener('DOMContentLoaded', function () {
             else {
                 timerTxt.value = "";
             }
-
         })
     }
 
-
     inputText.value = "";
-
-}
-)
-
-
-
+})
