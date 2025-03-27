@@ -1,19 +1,79 @@
-# MonkeyTypeClone
+🐵 MonkeyTypeClone - Typing Speed Test App
 
-https://priyanshudjango.pythonanywhere.com/
+🚀 About the App
 
-It's kind of a clone for monkeytype website for typing speed test made with django backend and js for frontend.
-The API's ,Logins,templates, django_restframework, the forms all work fine.
+MonkeyTypeClone is a typing speed test web app built from scratch using Django for the backend and JavaScript for the frontend. Unlike traditional typing apps, this project implements a unique typing logic to track user input and calculate accuracy dynamically.
 
-Tried a differnet approach from other typing test apps for the typing logic, but couldnt fix the three to four bugs in typing bugs in it, if you find this approach intereseting any inputs for improvement are appreciated.
+🌍 Live at: https://priyanshudjango.pythonanywhere.com/ 🚀
 
+🔥 Features
 
+✅ Real-Time Typing Test - Measure your typing speed and accuracy with a dynamic text paragraph.
 
-Bug1 : when typed real fast the code doesnt work as intended.
-Bug2 : when pressed space in between a word for first time it works fine but when done second time in the same typing session, things go wrong with the paragraph.
+📝 Django Backend - A robust backend using Django and Django REST Framework.
 
-Overall, i couldnt find how to fix it, maybe the approach was not good, but I had fun time building it and learning new stuff.
+🔑 User Authentication - Secure login and sign-up system for tracking personal records.
 
-![Screenshot of the app](./Monkeytype/monkeytypeenv/monkey/appss.png)
+📊 Performance Tracking - Store and review your past typing test results.
 
+🎨 Responsive UI - A clean and simple interface optimized for different screen sizes.
+
+🛠️ Technologies Used
+
+Backend 🖥️
+
+Django - Web framework for backend logic.
+
+Django REST Framework (DRF) - API creation and user authentication.
+
+SQLite - Database management.
+
+Gunicorn - WSGI server for deployment.
+
+Frontend 🎨
+
+HTML, CSS, JavaScript - Core UI components and dynamic interactions.
+
+Hosting & Storage ☁️
+
+PythonAnywhere - Web hosting for the project.
+
+🔧 Known Issues & Bugs 🐛
+
+1️⃣ Fast Typing Issue - When typing too fast, the system sometimes fails to register inputs correctly.
+
+2️⃣ Extra Space Issue - Pressing space in the middle of a word once works fine, but doing it multiple times within the same session causes issues in paragraph formatting.
+
+📌 Any insights or suggestions for improving the typing logic are welcome!
+
+🛠️ Installation & Setup
+
+1️⃣ Clone the Repository
+
+git clone https://github.com/PriyanshuMahlawat/MonkeyTypeClone.git
+cd MonkeyTypeClone
+
+2️⃣ Install Dependencies
+
+pip install -r requirements.txt
+
+3️⃣ Apply Migrations
+
+python manage.py migrate
+
+4️⃣ Run the Development Server
+
+python manage.py runserver
+
+Now, open http://127.0.0.1:8000/ in your browser to access the app! 🚀
+
+🤝 Contributing
+
+Want to contribute? Feel free to fork the repository and submit a pull request with improvements or bug fixes!
+
+📬 Contact
+
+📧 Email: priyanshumahlawat5@gmail.com🌐 GitHub: PriyanshuMahlawat
+
+Made with ❤️ by Priyanshu
 
