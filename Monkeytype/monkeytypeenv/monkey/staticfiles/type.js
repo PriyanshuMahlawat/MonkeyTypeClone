@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return cookieValue;
     }
-
+    //hello
 
     const csrftoken = getCookie('csrftoken');
     var wordarray = [];
@@ -148,6 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 .then(response => {
                                     if (!response.ok) {
                                         throw new Error('not ok');
+                                        
                                     }
                                     return response.json();
                                 })
